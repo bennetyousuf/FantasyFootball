@@ -4,33 +4,57 @@
 //     console.log(QB);
 // }) 
 
-function buildTable(data) { 
+// function buildTable(data) { 
 
-    d3.json("/api/v1.0/ADP_Data").then(data => {
-        var statTable = d3.select('tbody');
-        console.log(data);
-        function buildTable(data) {
-            // First, clear out any existing data
-            tbody.html("");
+//     d3.json("/api/v1.0/ADP_Data").then(data => {
+//         var statTable = d3.select('tbody');
+//         console.log(data);
+//         function buildTable(data) {
+//             // First, clear out any existing data
+//             tbody.html("");
     
-            // Next, loop through each object in the data
-            // and append a row and cells for each value in the row
-            data.forEach((dataRow) => {
-                // Append a row to the table body
-                const row = tbody.append("tr");
+//             // Next, loop through each object in the data
+//             // and append a row and cells for each value in the row
+//             data.forEach((dataRow) => {
+//                 // Append a row to the table body
+//                 const row = tbody.append("tr");
     
-                // Loop through each field in the dataRow and add
-                // each value as a table cell (td)
-                Object.values(dataRow).forEach((val) => {
-                    let cell = row.append("td");
-                    cell.text(val);
-                }
-            );
-            });
-        }
-    })
-  }
+//                 // Loop through each field in the dataRow and add
+//                 // each value as a table cell (td)
+//                 Object.values(dataRow).forEach((val) => {
+//                     let cell = row.append("td");
+//                     cell.text(val);
+//                 }
+//             );
+//             });
+//         }
+//     })
+//   }
+const tbody = d3.select("tbody");
+
   
+d3.selectAll("#positionDropDown").on("change", statChart);
+
+function buildTable(data) {
+    // First, clear out any existing data
+    tbody.html("");
+    console.log("in buildTable")
+    console.log(data)
+    // Next, loop through each object in the data
+    // and append a row and cells for each value in the row
+    data.forEach((dataRow) => {
+        // Append a row to the table body
+        const row = tbody.append("tr");
+        
+        // Loop through each field in the dataRow and add
+        // each value as a table cell (td)
+        Object.values(dataRow).forEach((val) => {
+            let cell = row.append("td");
+            cell.text(val);
+        }
+    );
+    });
+}
 
 function statChart(adpData) {
     // Use D3 to select the dropdown menu
@@ -46,30 +70,47 @@ function statChart(adpData) {
         d3.json("/api/v1.0/QB").then(data => {
             var statTable = d3.select('tbody');
             console.log(data);
-            function buildTable(data) {
-                // First, clear out any existing data
-                tbody.html("");
-        
-                // Next, loop through each object in the data
-                // and append a row and cells for each value in the row
-                data.forEach((dataRow) => {
-                    // Append a row to the table body
-                    const row = tbody.append("tr");
-        
-                    // Loop through each field in the dataRow and add
-                    // each value as a table cell (td)
-                    Object.values(dataRow).forEach((val) => {
-                        let cell = row.append("td");
-                        cell.text(val);
-                    }
-                );
-                });
-            }
+            buildTable(data);
         })
-       
+    }
+    else if (dataset === 'ALL_PLAYERS') {
+        d3.json("/api/v1.0/ADP_Data").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }
+    else if (dataset === 'RB') {
+        d3.json("/api/v1.0/RB").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === 'K') {
+        d3.json("/api/v1.0/K").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === 'TE') {
+        d3.json("/api/v1.0/TE").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === 'WR') {
+        d3.json("/api/v1.0/WR").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
     }
 }
-d3.selectAll("#positionDropDown").on("change", statChart);
+
+
 function handleClick() {
 
     // Grab the datetime value from the filter
@@ -93,4 +134,4 @@ function handleClick() {
 d3.selectAll("#filter-btn").on("click", handleClick);
 
 // Build the table when the page loads
-buildTable(data);
+// buildTable(data);

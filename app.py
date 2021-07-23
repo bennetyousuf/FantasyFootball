@@ -37,6 +37,7 @@ WR = Base.classes.WR_Data
 # Initialize Flask
 #################################################
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False   
 
 # Create Flask Routes 
 
@@ -57,7 +58,7 @@ def adp_data():
     """Return a list of precipitation (prcp)and date (date) data"""
     
     # Create new variable to store results from query to Measurement table for prcp and date columns
-    adp_query_results = session.query(ADP.FantasyPlayerKey, ADP.PlayerID, ADP.Name,ADP.Team, ADP.Position,ADP.AverageDraftPosition,ADP.AverageDraftPositionPPR, ADP.ByeWeek,ADP.LastSeasonFantasyPoints,ADP.ProjectedFantasyPoints).all()
+    adp_query_results = session.query(ADP.Name,ADP.Team, ADP.Position,ADP.AverageDraftPosition,ADP.AverageDraftPositionPPR, ADP.ByeWeek,ADP.LastSeasonFantasyPoints,ADP.ProjectedFantasyPoints).all()
 
     # Close session
     session.close()
@@ -70,10 +71,8 @@ def adp_data():
     #     # 5. Return JSON format of your new list that now contains the dictionary of position values to your browser
     
     adp_query_values = []
-    for fantasyplayerkey, playerid, name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in adp_query_results:
+    for name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in adp_query_results:
         adp_values_dict = {}
-        adp_values_dict['FantasyPlayerKey'] = fantasyplayerkey
-        adp_values_dict['PlayerID'] = playerid
         adp_values_dict['Name'] = name
         adp_values_dict['Team'] = team
         adp_values_dict['Position'] = position
@@ -187,6 +186,7 @@ def QB_Data():
         QB_values_dict['LastSeasonFantasyPoints'] = lastseasonfantasypoints
         QB_values_dict['ProjectedFantasyPoints'] = projectedfantasypoints
         QB_Data_values.append(QB_values_dict)
+    print(jsonify(QB_Data_values))
     return jsonify (QB_Data_values)  
 
 @app.route("/api/v1.0/RB")
@@ -265,6 +265,5 @@ def TE_Data():
     return jsonify (TE_Data_values) 
 
 
-   
 if __name__ == '__main__':
     app.run(debug=True) 
