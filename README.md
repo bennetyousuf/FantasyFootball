@@ -1,2 +1,0 @@
-# FantasyFootball
-Project 2
