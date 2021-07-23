@@ -32,6 +32,14 @@
 //   }
 const tbody = d3.select("tbody");
 
+// function initTable(highlights) {
+//     // First, clear out any existing data
+//     d3.json("/api/v1.0/Highlights").then(highlights => {
+//         var statTable = d3.select('tbody');
+//         buildTable(highlights);
+//     })
+// }
+// initTable;
   
 d3.selectAll("#positionDropDown").on("change", statChart);
 
@@ -80,6 +88,13 @@ function statChart(adpData) {
             buildTable(data);
         })
     }
+    else if (dataset === 'DEF') {
+        d3.json("/api/v1.0/DEF").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }
     else if (dataset === 'RB') {
         d3.json("/api/v1.0/RB").then(data => {
             var statTable = d3.select('tbody');
@@ -100,7 +115,7 @@ function statChart(adpData) {
             console.log(data);
             buildTable(data);
         })
-    } 
+    }  
     else if (dataset === 'WR') {
         d3.json("/api/v1.0/WR").then(data => {
             var statTable = d3.select('tbody');

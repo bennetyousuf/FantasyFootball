@@ -27,13 +27,14 @@ Base.prepare(engine, reflect=True)
 # # Save references to the measurement and station tables in the database
 print(Base.classes.keys())
 ADP = Base.classes.ADP_Data
-# DEF = Base.classes.DEF_Data
+DEF = Base.classes.DEF_Data
 K = Base.classes.K_Data
 Position_Dropdown = Base.classes.Position_dropdown
 QB = Base.classes.QB_Data
 RB = Base.classes.RB_Data
 TE = Base.classes.TE_Data
 WR = Base.classes.WR_Data
+Highlights = Base.classes.Highlights_Data
 # Initialize Flask
 #################################################
 app = Flask(__name__)
@@ -43,10 +44,50 @@ app.config['JSON_SORT_KEYS'] = False
 
 # Create root route
 @app.route("/")
-@app.route("/about.html")
-def welcome():
+def welcome(): 
     return render_template("index.html")
 
+@app.route("/about.html")
+def about():
+    return render_template("about.html") 
+
+@app.route("/index.html")
+def home(): 
+    return render_template("index.html") 
+
+@app.route("/api/v1.0/Highlights")
+def highlights_data():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    """Return a list of precipitation (prcp)and date (date) data"""
+    
+    # Create new variable to store results from query to Measurement table for prcp and date columns
+    adp_query_results = session.query(Highlights.Name,Highlights.Team, Highlights.Position,Highlights.AverageDraftPosition,Highlights.AverageDraftPositionPPR, Highlights.ByeWeek,Highlights.LastSeasonFantasyPoints,Highlights.ProjectedFantasyPoints).all()
+
+    # Close session
+    session.close()
+
+    # # Create a dictionary from the row data and append to a list of position_query_values
+    # Below steps explain how all loops in all Flask Routes for JSON data will work
+    #     # 1. Create an empty list of position query values 
+    #     # 2. Create for loop to iterate through query results (position_query_results) 
+    #     # 4. Append values from precipitation_dict to your original empty list position_query_values 
+    #     # 5. Return JSON format of your new list that now contains the dictionary of position values to your browser
+    
+    highlights_query_values = []
+    for name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in adp_query_results:
+        highlights_values_dict = {}
+        highlights_values_dict['Name'] = name
+        highlights_values_dict['Team'] = team
+        highlights_values_dict['Position'] = position
+        highlights_values_dict['AverageDraftPosition'] = averagedraftposition
+        highlights_values_dict['AverageDraftPositionPPR'] =averagedraftpositionppr
+        highlights_values_dict['ByeWeek'] = byeweek
+        highlights_values_dict['LastSeasonFantasyPoints'] = lastseasonfantasypoints
+        highlights_values_dict['ProjectedFantasyPoints'] = projectedfantasypoints
+        highlights_query_values.append(highlights_values_dict) 
+    return jsonify(highlights_query_values) 
 
 #Create all distinct routes to return JSONIFIED Data for each position full stats and dropdown data
 
@@ -116,29 +157,30 @@ def position_drop_down_data():
     return jsonify(position_query_values) 
 
 # Create a route that returns a JSON list of DEF Player Stats from the database
-# @app.route("/api/v1.0/DEF")
-# def DEF_Data(): 
+@app.route("/api/v1.0/DEF")
+def DEF_Data(): 
 
-#     session = Session(engine)
+    session = Session(engine)
 
-#     """Return a list of all columns from the DEF table in the database""" 
-#     def_query_results = session.query(DEF.Name, DEF.Team, DEF.Position, DEF.AverageDraftPosition, DEF.AverageDraftPositionPPR,DEF.ByeWeek, DEF.LastSeasonFantasyPoints,DEF.ProjectedFantasyPoints).all()
+    """Return a list of all columns from the DEF table in the database""" 
+    def_query_results = session.query(DEF.Name, DEF.Team, DEF.Position, DEF.AverageDraftPosition, DEF.AverageDraftPositionPPR,DEF.ByeWeek, DEF.LastSeasonFantasyPoints,DEF.ProjectedFantasyPoints).all()
 
-#     session.close()  
+    session.close()  
     
-#     DEF_Data_values = []
-#     for name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in def_query_results:
-#         def_values_dict = {}
-#         def_values_dict['Name'] = name
-#         def_values_dict['Team'] = team
-#         def_values_dict['Position'] = position
-#         def_values_dict['AverageDraftPosition'] = averagedraftposition
-#         def_values_dict['AverageDraftPositionPPR'] =averagedraftpositionppr
-#         def_values_dict['ByeWeek'] = byeweek
-#         def_values_dict['LastSeasonFantasyPoints'] = lastseasonfantasypoints
-#         def_values_dict['ProjectedFantasyPoints'] = projectedfantasypoints
-#         DEF_Data_values.append(def_values_dict)
-#     return jsonify (DEF_Data_values)  
+    DEF_Data_values = []
+    for name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in def_query_results:
+        # print(name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints)
+        def_values_dict = {}
+        def_values_dict['Name'] = name
+        def_values_dict['Team'] = team
+        def_values_dict['Position'] = position
+        def_values_dict['AverageDraftPosition'] = averagedraftposition
+        def_values_dict['AverageDraftPositionPPR'] =averagedraftpositionppr
+        def_values_dict['ByeWeek'] = byeweek
+        def_values_dict['LastSeasonFantasyPoints'] = lastseasonfantasypoints
+        def_values_dict['ProjectedFantasyPoints'] = projectedfantasypoints
+        DEF_Data_values.append(def_values_dict)
+    return jsonify (DEF_Data_values)  
 
 @app.route("/api/v1.0/K")
 def K_Data(): 
@@ -247,6 +289,31 @@ def TE_Data():
     """Return a list of all columns from the TE table from the database""" 
 
     def_query_results = session.query(TE.Name, TE.Team, TE.Position, TE.AverageDraftPosition, TE.AverageDraftPositionPPR,TE.ByeWeek, TE.LastSeasonFantasyPoints,TE.ProjectedFantasyPoints).all()
+
+    session.close()  
+    
+    TE_Data_values = []
+    for name, team, position,averagedraftposition,averagedraftpositionppr, byeweek, lastseasonfantasypoints, projectedfantasypoints in def_query_results:
+        TE_values_dict = {}
+        TE_values_dict['Name'] = name
+        TE_values_dict['Team'] = team
+        TE_values_dict['Position'] = position
+        TE_values_dict['AverageDraftPosition'] = averagedraftposition
+        TE_values_dict['AverageDraftPositionPPR'] =averagedraftpositionppr
+        TE_values_dict['ByeWeek'] = byeweek
+        TE_values_dict['LastSeasonFantasyPoints'] = lastseasonfantasypoints
+        TE_values_dict['ProjectedFantasyPoints'] = projectedfantasypoints
+        TE_Data_values.append(TE_values_dict)
+    return jsonify (TE_Data_values)  
+
+@app.route("/api/v1.0/Highlight")
+def Highlight_Data(): 
+
+    session = Session(engine)
+
+    """Return a list of all columns from the TE table from the database""" 
+
+    def_query_results = session.query( func.min(QB.AverageDraftPosition), QB.Name, QB.Team, QB.Position, QB.AverageDraftPosition, QB.AverageDraftPositionPPR,QB.ByeWeek, QB.LastSeasonFantasyPoints,QB.ProjectedFantasyPoints).all()
 
     session.close()  
     

@@ -51,7 +51,7 @@ html {
     color: #fff;
   
     /* Visual */
-    background: #2e7c5e;
+    background: #a2a8a6;
   }
   
   /* Logo hover state */
@@ -78,7 +78,7 @@ html {
   /* Media query for nav */
   @media only screen and (max-width: 767px) {
     .navbar-header {
-      background-color: #4aaaa5;
+      background-color: #2e7c5e;
     }
   
     #logo {
