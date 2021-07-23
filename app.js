@@ -12,7 +12,7 @@ function statchart(adpData) {
     // var y = [];
   
     if (dataset === 'QB') {
-        d3.json("http://127.0.0.1:5000/api/v1.0/QB").then(data => {
+        d3.json("/api/v1.0/QB").then(data => {
             var statTable = d3.select('tbody');
             console.log(data);
         })
