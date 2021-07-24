@@ -48,7 +48,7 @@ a {
 }
 a:active,
 a:hover {
-  outline: 0;
+  outline: 1;
 }
 abbr[title] {
   border-bottom: 1px dotted;
@@ -4610,7 +4610,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   color: #2e7c5e;
 }
 .navbar-default .navbar-nav > li > a {
-  color: #2e7c5e;
+  color: white;
 }
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {

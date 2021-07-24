@@ -74,7 +74,7 @@ html {
   
   /* Nav element hover state */
   .navbar-default .navbar-nav > li > a:hover {
-    color: #2e7c5e;
+    color: black;
     font-weight: bold;
   }
   

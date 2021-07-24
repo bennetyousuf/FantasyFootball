@@ -1,37 +1,50 @@
-// // var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+function bubbleChart (data) {
+    var AvgDP = data.AverageDraftPosition;
+    var Name = data.Name;
+    var Position = data.Position;
+    var LSFP = data.LastSeasonFantasyPoints;
+    var PFP = data.ProjectedFantasyPoints;
+    var colors = [];
 
-// d3.json("/api/v1.0/QB").then (QB => {
-//     console.log(QB);
-// }) 
+    var ADP = [];
+    var Position =[];
 
-// function buildTable(data) { 
+    for (var i = 0; i < data.length; i++){
+        ADP.push(data[i].AverageDraftPosition);
+        Position.push(data[i].Position);
+    }
 
-//     d3.json("/api/v1.0/ADP_Data").then(data => {
-//         var statTable = d3.select('tbody');
-//         console.log(data);
-//         function buildTable(data) {
-//             // First, clear out any existing data
-//             tbody.html("");
-    
-//             // Next, loop through each object in the data
-//             // and append a row and cells for each value in the row
-//             data.forEach((dataRow) => {
-//                 // Append a row to the table body
-//                 const row = tbody.append("tr");
-    
-//                 // Loop through each field in the dataRow and add
-//                 // each value as a table cell (td)
-//                 Object.values(dataRow).forEach((val) => {
-//                     let cell = row.append("td");
-//                     cell.text(val);
-//                 }
-//             );
-//             });
-//         }
-//     })
-//   }
+    var bubblelayout = {
+        title: "Player Average Draft Positions",
+        hovermode: "closest",
+        xaxis: {title: "Average Draft Position" },
+        height: 600,
+        width: 600
+    };
+
+    var bubbledata = [
+        {
+            x: Position,
+            y: ADP,
+            // text: "<h2>" + Name[i] + "</h2> <hr> <h3>ADP: " + ADP[i] + "</h3><h3>Projected Fantasy Points: " + PFP[i] + "</h3><h3>Position: " + Position[i] + "</h3>",
+            mode: "markers",
+            marker: {
+                opacity: 0.3,
+                size: 30,
+                color: "green",
+            }
+        }
+    ];
+    Plotly.newPlot("bubble", bubbledata, bubblelayout);
+
+}
+
 const tbody = d3.select("tbody");
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2c8508a34424197153707e1d97599f2b1a2d369a
   
 d3.selectAll("#positionDropDown").on("change", statChart);
 
@@ -71,6 +84,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     } 
     else if (dataset === '----') {
@@ -85,6 +99,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
     else if (dataset === 'DEF') {
@@ -92,6 +107,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
     else if (dataset === 'RB') {
@@ -99,6 +115,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     } 
     else if (dataset === 'K') {
@@ -106,6 +123,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     } 
     else if (dataset === 'TE') {
@@ -113,6 +131,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }  
     else if (dataset === 'WR') {
@@ -120,6 +139,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
 }
