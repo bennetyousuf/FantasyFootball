@@ -41,10 +41,6 @@ function bubbleChart (data) {
 
 const tbody = d3.select("tbody");
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2c8508a34424197153707e1d97599f2b1a2d369a
   
 d3.selectAll("#positionDropDown").on("change", statChart);
 
