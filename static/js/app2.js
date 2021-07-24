@@ -32,14 +32,6 @@
 //   }
 const tbody = d3.select("tbody");
 
-function initTable(highlights) {
-    // First, clear out any existing data
-    d3.json("/api/v1.0/Highlight").then(highlights => {
-        var statTable = d3.select('tbody');
-        buildTable(highlights);
-    })
-}
-initTable;
   
 d3.selectAll("#positionDropDown").on("change", statChart);
 
@@ -156,4 +148,18 @@ function handleClick() {
 d3.selectAll("#filter-btn").on("click", handleClick);
 
 // Build the table when the page loads
-buildTable(data);
+buildTable(data); 
+
+// // Interactive table script
+// $(document).ready( function () {
+//     $('#table_id').DataTable();
+// } ); 
+
+function initTable(highlights) {
+    // First, clear out any existing data
+    d3.json("/api/v1.0/Highlight").then(highlights => {
+        var statTable = d3.select('tbody');
+        buildTable(highlights);
+    })
+}
+initTable ();

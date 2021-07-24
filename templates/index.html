@@ -14,7 +14,13 @@
     <!-- Our own CSS stylesheet -->
     <link rel="stylesheet" href="/static/css/style.css" media="screen">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <link rel= "stylesheet" type= "text/css" href= "/static/css/style.css">
+    <link rel= "stylesheet" type= "text/css" href= "/static/css/style.css">  
+
+    <!-- Javascript Interactive Tables Libraries -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+
 
   </head>
 
@@ -124,10 +130,28 @@
         Last Updated July 2021
       </p>
     </footer>
-    <!-- End of footer -->
+    <!-- End of footer --> 
+    <script>
+      $(document).ready(function () {
+        $('#stat-table').DataTable({
+          ajax: '/api/data',
+          columns: [
+            {data: 'Name'},
+            {data: 'Team', searchable: false},
+            {data: 'Position', orderable: false, searchable: false},
+            {data: 'ADP', orderable: false, searchable: false},
+            {data: 'ADP PPR'}
+            {data: 'Bye Week'},
+            {data: 'Last Season Fantasy Pts', searchable: false},
+            {data: 'Projected Fantasy Pts', orderable: false, searchable: false},
+            
+          ],
+        });
+      });
+    </script>
 
     <!-- jQuery CDN -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
 
     <!-- Bootstrap CDN -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
