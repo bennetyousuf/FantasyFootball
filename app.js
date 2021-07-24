@@ -1,85 +1,17 @@
-
-// d3.selectAll("#positionDropDown").on("change", statChart);
-
-// function statchart(adpData) {
-//     // Use D3 to select the dropdown menu
-//     var dropdownMenu = d3.select("#positionDropDown");
-//     // Assign the value of the dropdown menu option to a variable
-//     var dataset = dropdownMenu.property("value");
-  
-//     // // Initialize x and y arrays
-//     // var x = [];
-//     // var y = [];
-  
-//     if (dataset === 'QB') {
-//         d3.json("/api/v1.0/QB").then(data => {
-//             var statTable = d3.select('tbody');
-//             console.log(data);
-//         })
-//     }
-  
-//         // else if (dataset === 'RB') {
-//         //     x = [10, 20, 30, 40, 50];
-//         //     y = [1, 10, 100, 1000, 10000];
-//         // }
-// }
-         
-// // function adpGraph(adpData) {
-// //     d3.json(flaskurl).then(data => {
-        
-// //     })
-
-// // }
-
-// function init(){
-//     var dropDown = d3.select("#positionDropDown");
-
-//     d3.json(flaskurl).then(positions => {
-//         var positionIds = positions;
-//         positionIds.forEach(adpData => {
-//             dropDown.append("option").text(adpData).proptery("value",adpData);
-//         })
-//     })
-
-//     statchart();
-//     adpGraph();
-// }
-
-// function optionChange(newAdpData){
-//     function statchart(newAdpData);
-//     // function adpGraph(newAdpData);
-// }
-
-// init();
-
 function bubbleChart (data) {
-    var ADP = data.AverageDraftPosition;
+    var AvgDP = data.AverageDraftPosition;
     var Name = data.Name;
     var Position = data.Position;
     var LSFP = data.LastSeasonFantasyPoints;
-    var PFP = ProjectedFantasyPoints;
+    var PFP = data.ProjectedFantasyPoints;
     var colors = [];
 
-    for (var i = 0; i < ADP.length; i++) {
-    
-        if (ADP[i] >= 2245) {
-            colors.push("#581845");
-        }
-        else if (ADP[i] <= 2244 && ADP[i] >= 1000) {
-            colors.push("#900C3F");
-        }
-        else if (ADP[i] <= 999 && ADP[i] >= 800) {
-            colors.push("#C70039");
-        }
-        else if (ADP[i] <= 799 && ADP[i] >= 500) {
-            colors.push("#FF5733");
-        }
-        else if (ADP[i] <= 499 && ADP[i] >= 200) {
-            colors.push("#FFC300");
-        }
-        else {
-            colors.push("#DAF7A6");
-        }
+    var ADP = [];
+    var Position =[];
+
+    for (var i = 0; i < data.length; i++){
+        ADP.push(data[i].AverageDraftPosition);
+        Position.push(data[i].Position);
     }
 
     var bubblelayout = {
@@ -94,15 +26,138 @@ function bubbleChart (data) {
         {
             x: ADP,
             y: Position,
-            text: "<h2>" + Name[i] + "</h2> <hr> <h3>ADP: " + ADP[i] + "</h3><h3>Projected Fantasy Points: " + PFP[i] + "</h3><h3>Position: " + Position[i] + "</h3>",
+            // text: "<h2>" + Name[i] + "</h2> <hr> <h3>ADP: " + ADP[i] + "</h3><h3>Projected Fantasy Points: " + PFP[i] + "</h3><h3>Position: " + Position[i] + "</h3>",
             mode: "markers",
             marker: {
                 opacity: 0.3,
                 size: 30,
-                color: colors,
+                color: green,
             }
         }
     ];
     Plotly.newPlot("bubble", bubbledata, bubblelayout);
 
 }
+
+const tbody = d3.select("tbody");
+
+// function initTable(highlights) {
+//     // First, clear out any existing data
+//     d3.json("/api/v1.0/Highlights").then(highlights => {
+//         var statTable = d3.select('tbody');
+//         buildTable(highlights);
+//     })
+// }
+// initTable;
+  
+d3.selectAll("#positionDropDown").on("change", statChart);
+
+function buildTable(data) {
+    // First, clear out any existing data
+    tbody.html("");
+    console.log("in buildTable")
+    console.log(data)
+    // Next, loop through each object in the data
+    // and append a row and cells for each value in the row
+    data.forEach((dataRow) => {
+        // Append a row to the table body
+        const row = tbody.append("tr");
+        
+        // Loop through each field in the dataRow and add
+        // each value as a table cell (td)
+        Object.values(dataRow).forEach((val) => {
+            let cell = row.append("td");
+            cell.text(val);
+        }
+    );
+    });
+}
+
+function statChart(adpData) {
+    // Use D3 to select the dropdown menu
+    var dropdownMenu = d3.select("#positionDropDown");
+    // Assign the value of the dropdown menu option to a variable
+    var dataset = dropdownMenu.property("value");
+
+    // // Initialize x and y arrays
+    // var x = [];
+    // var y = [];
+
+    if (dataset === 'QB') {
+        d3.json("/api/v1.0/QB").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+            bubbleChart(data);
+        })
+    }
+    else if (dataset === 'ALL_PLAYERS') {
+        d3.json("/api/v1.0/ADP_Data").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }
+    else if (dataset === 'DEF') {
+        d3.json("/api/v1.0/DEF").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }
+    else if (dataset === 'RB') {
+        d3.json("/api/v1.0/RB").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === 'K') {
+        d3.json("/api/v1.0/K").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === 'TE') {
+        d3.json("/api/v1.0/TE").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }  
+    else if (dataset === 'WR') {
+        d3.json("/api/v1.0/WR").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    }
+}
+
+
+function handleClick() {
+
+    // Grab the datetime value from the filter
+    const date = d3.select("#positionDropDown").property("value");
+    let filteredData = data;
+  
+    // Check to see if a date was entered and filter the
+    // data using that date.
+    if (position) {
+      // Apply `filter` to the table data to only keep the
+      // rows where the `datetime` value matches the filter value
+      filteredData = filteredData.filter(row => row.Position === position);
+    }
+  
+    // Rebuild the table using the filtered data
+    // @NOTE: If no date was entered, then filteredData will
+    // just be the original tableData.
+    buildTable(filteredData);
+    bubbleChart(filteredData);
+}
+  // Attach an event to listen for the form button
+d3.selectAll("#filter-btn").on("click", handleClick);
+
+// Build the table when the page loads
+// buildTable(data);
