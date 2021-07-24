@@ -24,8 +24,8 @@ function bubbleChart (data) {
 
     var bubbledata = [
         {
-            x: ADP,
-            y: Position,
+            x: Position,
+            y: ADP,
             // text: "<h2>" + Name[i] + "</h2> <hr> <h3>ADP: " + ADP[i] + "</h3><h3>Projected Fantasy Points: " + PFP[i] + "</h3><h3>Position: " + Position[i] + "</h3>",
             mode: "markers",
             marker: {
@@ -89,6 +89,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
     else if (dataset === 'DEF') {
@@ -96,6 +97,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
     else if (dataset === 'RB') {
@@ -103,6 +105,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     } 
     else if (dataset === 'K') {
@@ -110,6 +113,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     } 
     else if (dataset === 'TE') {
@@ -117,6 +121,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }  
     else if (dataset === 'WR') {
@@ -124,6 +129,7 @@ function statChart(adpData) {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
+            bubbleChart(data);
         })
     }
 }
@@ -159,6 +165,7 @@ function initTable(highlights) {
     d3.json("/api/v1.0/Highlights").then(highlights => {
         var statTable = d3.select('tbody');
         buildTable(highlights);
+        bubbleChart(highlights);
     })
 }
 initTable();
