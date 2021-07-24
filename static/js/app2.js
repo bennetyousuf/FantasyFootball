@@ -32,14 +32,14 @@
 //   }
 const tbody = d3.select("tbody");
 
-// function initTable(highlights) {
-//     // First, clear out any existing data
-//     d3.json("/api/v1.0/Highlights").then(highlights => {
-//         var statTable = d3.select('tbody');
-//         buildTable(highlights);
-//     })
-// }
-// initTable;
+function initTable(highlights) {
+    // First, clear out any existing data
+    d3.json("/api/v1.0/Highlight").then(highlights => {
+        var statTable = d3.select('tbody');
+        buildTable(highlights);
+    })
+}
+initTable;
   
 d3.selectAll("#positionDropDown").on("change", statChart);
 
@@ -76,6 +76,13 @@ function statChart(adpData) {
 
     if (dataset === 'QB') {
         d3.json("/api/v1.0/QB").then(data => {
+            var statTable = d3.select('tbody');
+            console.log(data);
+            buildTable(data);
+        })
+    } 
+    else if (dataset === '----') {
+        d3.json("/api/v1.0/Highlight").then(data => {
             var statTable = d3.select('tbody');
             console.log(data);
             buildTable(data);
@@ -149,4 +156,4 @@ function handleClick() {
 d3.selectAll("#filter-btn").on("click", handleClick);
 
 // Build the table when the page loads
-// buildTable(data);
+buildTable(data);
